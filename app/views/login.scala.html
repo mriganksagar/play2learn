@@ -1,0 +1,62 @@
+@()(implicit request: RequestHeader)
+
+<!-- @main("login") {
+    <form>
+        Name: <input type="text" name="name">
+        Password: <input type="text" name="name">
+        <input type="submit" value="Submit">
+    </form>
+} -->
+
+<style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+        }
+
+        form {
+            display: inline-block;
+            width: 300px;
+            background-color: #eee;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type=text], input[type=password] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type=submit] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+        }
+
+        input[type=submit]:hover {
+            opacity: 0.8;
+        }
+</style>
+
+@main("Login Page") {
+    <form action="@routes.HomeController.validateUser()" method="post">
+        @helper.CSRF.formField
+        <label for="uname"><b>Username</b></label>
+        <input type="text" placeholder="Enter Username" name="uname" required>
+
+        <label for="psw"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="psw" required>
+
+        <input type="submit" value="Login">
+    </form>
+}
