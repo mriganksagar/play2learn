@@ -1,0 +1,22 @@
+@()(implicit request: RequestHeader)
+
+@main("Sign Up") {
+    <div class="container">
+        <div class="form-container">
+            <h1>Sign Up</h1>
+            <form action="@routes.AuthController.createUser()" method="POST">
+                @helper.CSRF.formField
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit">Sign Up</button>
+            </form>
+            <p>Already have an account? <a href="@routes.AuthController.login(None)">Log in</a></p>
+        </div>
+    </div>
+}

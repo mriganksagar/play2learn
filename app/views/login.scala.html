@@ -1,12 +1,4 @@
-@()(implicit request: RequestHeader)
-
-<!-- @main("login") {
-    <form>
-        Name: <input type="text" name="name">
-        Password: <input type="text" name="name">
-        <input type="submit" value="Submit">
-    </form>
-} -->
+@(redirect: Option[String])(implicit request: RequestHeader)
 
 <style>
         body {
@@ -49,14 +41,15 @@
 </style>
 
 @main("Login Page") {
-    <form action="@routes.HomeController.validateUser()" method="post">
+    <form action="@routes.AuthController.authenticateUser(redirect)" method="post">
         @helper.CSRF.formField
         <label for="username"><b>Username</b></label>
         <input type="text" placeholder="Enter Username" name="username" required>
 
         <label for="password"><b>Password</b></label>
         <input type="password" placeholder="Enter Password" name="password" required>
-
         <input type="submit" value="Login">
+        <br>
+        Don't have an Account? <a href="@routes.AuthController.signup()">Sign Up</a>
     </form>
 }

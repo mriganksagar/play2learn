@@ -9,7 +9,7 @@ scalaVersion := "3.3.3"
 
 libraryDependencies += guice
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "7.0.1" % Test
-
+libraryDependencies += "com.github.t3hnar" % "scala-bcrypt_2.13" % "4.3.0"
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "com.example.controllers._"
 
