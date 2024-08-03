@@ -15,11 +15,10 @@ class SessionStoreDao @Inject()(protected val dbConfigProvider: DatabaseConfigPr
     val dbConfig = dbConfigProvider.get[PostgresProfile]
     import dbConfig._
     import profile.api._
-
+      
     val sessionStore = TableQuery[SessionStore]
-
     def authorise(sessionId: UUID): Future[Boolean] =
-        db.run(sessionStore.filter(_.sessionId === sessionId).exists.result)
+        db.run(sessionStore.filter(_.sessionId === sessionId).exists.result)        
         
     def addSession(sessionId:UUID, username: String): Future[SessionEntity]=
         db.run((sessionStore returning sessionStore) += SessionEntity(sessionId, username))
