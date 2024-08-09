@@ -1,19 +1,18 @@
-package repository
+package models.repository
 
 import javax.inject._
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.PostgresProfile
-import models.{Credential, CredentialsStore}
+import models.{Credential, CredentialTable}
 import scala.concurrent.{ExecutionContext, Future}
-
+import slick.lifted.TableQuery
 
 @Singleton
 class CredentialsStoreDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(implicit executionContext: ExecutionContext) {
     val dbConfig = dbConfigProvider.get[PostgresProfile]
     import dbConfig._
     import profile.api._
-
-    private val credentialsStore = TableQuery[CredentialsStore]
+    private lazy val credentialsStore = TableQuery[CredentialTable]
 
     def all(): Future[Seq[Credential]] = db.run(credentialsStore.result)
 
@@ -28,4 +27,10 @@ class CredentialsStoreDao @Inject()(protected val dbConfigProvider: DatabaseConf
 
     def delete(id: Long): Future[Int] =
         db.run(credentialsStore.filter(_.id === id).delete)
+}
+
+
+object sit{
+    val mytable = TableQuery[CredentialTable]
+    mytable.
 }
