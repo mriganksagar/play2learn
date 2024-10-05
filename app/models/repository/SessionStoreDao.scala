@@ -15,9 +15,8 @@ class SessionStoreDao @Inject()(protected val dbConfigProvider: DatabaseConfigPr
     import dbConfig._
     import profile.api._
       
-    val xx: TableQuery[SessionTable] = TableQuery[SessionTable]
-    xx
     val sessionStore = TableQuery[SessionTable]
+    
     def authorise(sessionId: UUID): Future[Boolean] =
         db.run(sessionStore.filter(_.sessionId === sessionId).exists.result)        
         

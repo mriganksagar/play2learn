@@ -10,6 +10,6 @@ class CredentialTable(tag:Tag) extends Table[Credential](tag, "credential_store"
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def username = column[String]("username")
     def passwordHash = column[String]("password_hash")
-    def * = (id.?, username, passwordHash) <> (Credential.apply.tupled, Credential.unapply)
+    def * = (id.?, username, passwordHash).mapTo[Credential]
 }
 

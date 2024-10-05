@@ -6,14 +6,13 @@ import play.api.mvc.AnyContent
 import com.github.t3hnar.bcrypt.*
 
 import scala.util.{Failure, Success, Try}
-import repository.{CredentialsStoreDao, SessionStoreDao}
+import models.repository.{CredentialsStoreDao, SessionStoreDao}
 
 import javax.inject.*
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import Auth.AuthStore.sessionStore
 import models.Credential
-// import Auth.AuthStore.sessionStore
 
 trait AuthService {
     def authorise(sessionId: String):Boolean
@@ -32,7 +31,7 @@ class SessionAuthServiceImpl @Inject() (credentialsStoreDao: CredentialsStoreDao
             credential <- credentialsStoreDao.getByUsername(username)
             isCorrect <- Future.fromTry(password.isBcryptedSafeBounded(credential.passwordHash))
             if isCorrect
-            session <- sessionStoreDao.addSession(UUID.randomUUID(), credential.username)   
+            session <- sessionStoreDao.addSession(UUID.randomUUID(), credential.username)
         } yield session.sessionId.toString
     }
 

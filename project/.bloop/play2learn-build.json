@@ -271,7 +271,7 @@
         "platform": {
             "name": "jvm",
             "config": {
-                "home": "/home/mishu/.sdkman/candidates/java/17.0.12-zulu",
+                "home": "/home/mishu/.sdkman/candidates/java/11.0.24-zulu",
                 "options": [
                     "-Duser.dir=/home/mishu/code/play2learn/project"
                 ]
@@ -280,7 +280,7 @@
                 
             ],
             "runtimeConfig": {
-                "home": "/home/mishu/.sdkman/candidates/java/17.0.12-zulu",
+                "home": "/home/mishu/.sdkman/candidates/java/11.0.24-zulu",
                 "options": [
                     "-Duser.dir=/home/mishu/code/play2learn/project"
                 ]
