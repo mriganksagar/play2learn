@@ -1,7 +1,7 @@
 logs
 target
 /.bsp
-/.bloop
+**/.bloop
 /.g8
 /.idea
 /.metals
