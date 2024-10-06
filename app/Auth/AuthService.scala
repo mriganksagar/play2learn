@@ -15,16 +15,16 @@ import Auth.AuthStore.sessionStore
 import models.Credential
 
 trait AuthService {
-    def authorise(sessionId: String):Boolean
-    def authenticate(username:String, password: String): Option[String]
-    def signup(username:String, password: String): Try[Unit]
-    def logout(sessionId:String): Boolean
+    def authorise(sessionId: String):Future[Boolean]
+    def authenticate(username:String, password: String): Future[String]
+    def signup(username:String, password: String): Future[Unit]
+    def logout(sessionId:String): Future[Boolean]
 }
 
 @Singleton
 class SessionAuthServiceImpl @Inject() (credentialsStoreDao: CredentialsStoreDao, sessionStoreDao: SessionStoreDao ) extends AuthService {
     def authorise(sessionId:String): Future[Boolean] = sessionStoreDao.authorise(UUID.fromString(sessionId))
-    
+
     def authenticate(username:String, password: String): Future[String] = {
         println(s" auth impl login called with $username $password")
         for {
