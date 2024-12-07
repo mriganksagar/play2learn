@@ -3,9 +3,8 @@ package models.repository
 import javax.inject._
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.PostgresProfile
-import models.{Credential, CredentialTable}
 import scala.concurrent.{ExecutionContext, Future }
-
+import models.tables.{Credential, Tables}
 
 /** 
 *   play will inject 
@@ -17,20 +16,19 @@ class CredentialsStoreDao @Inject()(protected val dbConfigProvider: DatabaseConf
     val dbConfig = dbConfigProvider.get[PostgresProfile]
     import dbConfig._
     import profile.api._
-
-    private lazy val credentialsStore = TableQuery[CredentialTable]
+    import Tables.credentials
 
     def getByUsername(username: String): Future[Credential] = 
-        db.run(credentialsStore.filter(_.username === username).result.head)
+        db.run(Tables.credentials.filter(_.username === username).result.head)
     
     def insert(newCredential: Credential): Future[Long] =
-        db.run((credentialsStore returning credentialsStore.map(_.id)) += newCredential)
+        db.run((credentials returning credentials.map(_.id)) += newCredential)
 
     def update(id: Long, newCredential: Credential): Future[Int] =
-        db.run(credentialsStore.filter(_.id === id).update(newCredential))
+        db.run(credentials.filter(_.id === id).update(newCredential))
 
     def delete(id: Long): Future[Int] =
-        db.run(credentialsStore.filter(_.id === id).delete)
+        db.run(credentials.filter(_.id === id).delete)
 
 }
 

@@ -2,8 +2,8 @@ package controllers
 
 import javax.inject.*
 import play.api.mvc.*
-import Auth.AuthService
-import Auth.SessionAuthServiceImpl
+import auth.AuthService
+import auth.SessionAuthServiceImpl
 import play.api.data.Form
 import play.mvc.BodyParser.FormUrlEncoded
 import play.core.parsers.FormUrlEncodedParser
@@ -27,7 +27,7 @@ class AuthController @Inject() (val controllerComponents: ControllerComponents)(
 
     // post request for signing up
     def createUser() = Action.async { implicit request: Request[AnyContent] =>
-        {for {
+        val result = for {
             data <- request.body.asFormUrlEncoded
             username <- data.get("email")
             password <- data.get("password")
@@ -35,7 +35,9 @@ class AuthController @Inject() (val controllerComponents: ControllerComponents)(
             authService.signup(username.head, password.head)
               .map(_ => Redirect(routes.AuthController.login(None)))
               .recover { case _ => Results.NotImplemented("Error creating user") }
-        }}.getOrElse(Future.successful(Results.BadRequest("invalid form of data provided")))
+        }
+
+        result.getOrElse(Future.successful(Results.BadRequest("invalid form of data provided")))
     }
 
     // post request for loging in
@@ -45,7 +47,7 @@ class AuthController @Inject() (val controllerComponents: ControllerComponents)(
             username <- form.get("username")
             password <- form.get("password")
         } yield authService.authenticate(username.head, password.head)
-          .map(_ => Redirect(redirect.getOrElse("/home")))
+          .map(sessionId => Redirect(redirect.getOrElse("/home")).withSession(request.session + ("sessionId" -> sessionId)))
           .recover { case _ => Results.NotFound("User not found in the records")
         }}.getOrElse(Future.successful(Results.BadRequest("invalid form of data provided")))
     }

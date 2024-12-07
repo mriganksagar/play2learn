@@ -1,4 +1,4 @@
-package Auth
+package auth
 import javax.inject.Singleton
 import java.util.UUID
 import play.api.mvc.Request
@@ -11,8 +11,8 @@ import models.repository.{CredentialsStoreDao, SessionStoreDao}
 import javax.inject.*
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
-import Auth.AuthStore.sessionStore
-import models.Credential
+import AuthStore.sessionStore
+import models.tables.Credential
 
 trait AuthService {
     def authorise(sessionId: String):Future[Boolean]
@@ -39,7 +39,7 @@ class SessionAuthServiceImpl @Inject() (credentialsStoreDao: CredentialsStoreDao
         println(s"signup auth impl called with username: $username and password: $password")
         for {
             hashedPassword <- Future.fromTry(password.bcryptSafeBounded)
-            _ <- credentialsStoreDao.insert(Credential(None, username, hashedPassword))
+            _ <- credentialsStoreDao.insert(Credential(None, username, hashedPassword)).andThen{case Failure(exception) => println(s"insert credentials failed with exception, ${exception.getMessage()}")}
         } yield ()
     }
 

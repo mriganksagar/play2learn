@@ -1,4 +1,4 @@
-package Auth
+package auth
 
 import play.api.mvc.RequestHeader
 import scala.util.{Try, Success}

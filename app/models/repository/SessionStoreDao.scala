@@ -5,7 +5,7 @@ import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.PostgresProfile
 
 import scala.concurrent.{ExecutionContext, Future}
-import models.{SessionTable, SessionEntity}
+import models.tables.UserSession
 
 import java.util.UUID
 
@@ -14,15 +14,14 @@ class SessionStoreDao @Inject()(protected val dbConfigProvider: DatabaseConfigPr
     val dbConfig = dbConfigProvider.get[PostgresProfile]
     import dbConfig._
     import profile.api._
-      
-    val sessionStore = TableQuery[SessionTable]
-    
+    import models.tables.Tables.sessions
+
     def authorise(sessionId: UUID): Future[Boolean] =
-        db.run(sessionStore.filter(_.sessionId === sessionId).exists.result)        
+        db.run(sessions.filter(_.sessionId === sessionId).exists.result)        
         
-    def addSession(sessionId:UUID, username: String): Future[SessionEntity]=
-        db.run((sessionStore returning sessionStore) += SessionEntity(sessionId, username))
+    def addSession(sessionId:UUID, username: String): Future[UserSession]=
+        db.run((sessions returning sessions) += UserSession(sessionId, username))
 
     def removeSession(sessionId: UUID): Future[Int] =
-        db.run(sessionStore.filter(_.sessionId === sessionId).delete)
+        db.run(sessions.filter(_.sessionId === sessionId).delete)
 }
